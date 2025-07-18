@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MEIHO SOFTBALL CLUB DRINKING PARTY</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <style>
+        body {
+            background-image: url('https://cdn1.genspark.ai/user-upload-image/4_generated/b20aadd3-207e-47c2-8c82-ff61f0eeb21b');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .form-glass {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .title-text {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+        
+        .attendance-item {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-left: 4px solid #28a745;
+        }
+        
+        .attendance-item.absent {
+            border-left-color: #dc3545;
+        }
+        
+        .attendance-item.undecided {
+            border-left-color: #ffc107;
+        }
+        
+        .venue-link {
+            color: #ff6b6b;
+            text-decoration: none;
+            font-weight: bold;
+            border-bottom: 2px solid #ff6b6b;
+            transition: all 0.3s ease;
+        }
+        
+        .venue-link:hover {
+            color: #ee5a24;
+            border-bottom-color: #ee5a24;
+            transform: translateY(-1px);
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ff6b6b;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="font-sans text-gray-900 leading-relaxed">
+    <div class="min-h-screen py-8 px-4">
+        <div class="max-w-4xl mx-auto">
+            <!-- Title Section -->
+            <div class="text-center mb-8">
+                <h1 class="title-text text-5xl md:text-6xl font-bold mb-4">
+                    MEIHO SOFTBALL CLUB<br>
+                    DRINKING PARTY
+                </h1>
+                <div class="text-white text-xl font-semibold">
+                    <i class="fas fa-baseball-ball mr-2"></i>
+                    明豊ソフトボール部 飲み会出欠票
+                </div>
+            </div>
+
+            <!-- Event Details -->
+            <div class="glass-effect rounded-2xl p-6 mb-8">
+                <h2 class="text-3xl font-bold text-white mb-6 flex items-center">
+                    <i class="fas fa-calendar-alt mr-3 text-yellow-400"></i>
+                    イベント詳細
+                </h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div class="form-glass rounded-xl p-4">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-clock text-blue-400 mr-3"></i>
+                            <strong class="text-white text-lg">開催日時</strong>
+                        </div>
+                        <p class="text-white text-xl">2025年7月23日</p>
+                    </div>
+                    <div class="form-glass rounded-xl p-4">
+                        <div class="flex items-center mb-2">
+                            <i class="fas fa-map-marker-alt text-red-400 mr-3"></i>
+                            <strong class="text-white text-lg">会場</strong>
+                        </div>
+                        <p class="text-white text-xl">
+                            <a href="https://maps.google.com/maps?q=たからや+兵庫県川西市" target="_blank" class="venue-link">
+                                たからや
+                            </a>
+                        </p>
+                        <p class="text-gray-200 text-sm">兵庫県川西市</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attendance Form -->
+            <div class="glass-effect rounded-2xl p-6 mb-8">
+                <h3 class="text-2xl font-bold text-white mb-6 flex items-center">
+                    <i class="fas fa-clipboard-list mr-3 text-green-400"></i>
+                    出欠確認フォーム
+                </h3>
+                <form id="attendanceForm" class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-white font-semibold mb-2">
+                            <i class="fas fa-user mr-2"></i>氏名 *
+                        </label>
+                        <input type="text" id="name" name="name" required 
+                               class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-gray-300 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent">
+                    </div>
+                    
+                    <div>
+                        <label for="attendance" class="block text-white font-semibold mb-2">
+                            <i class="fas fa-check-circle mr-2"></i>出欠 *
+                        </label>
+                        <select id="attendance" name="attendance" required 
+                                class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent">
+                            <option value="">選択してください</option>
+                            <option value="参加">参加</option>
+                            <option value="不参加">不参加</option>
+                            <option value="未定">未定</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="comment" class="block text-white font-semibold mb-2">
+                            <i class="fas fa-comment mr-2"></i>コメント（任意）
+                        </label>
+                        <textarea id="comment" name="comment" rows="3" 
+                                  class="w-full px-4 py-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-gray-300 border border-white border-opacity-30 focus:outline-none focus:ring-2 focus:ring-red-400 focus:border-transparent"
+                                  placeholder="アレルギー情報やメッセージなど..."></textarea>
+                    </div>
+                    
+                    <button type="submit" id="submitBtn" class="btn-primary w-full py-3 px-6 rounded-lg text-white font-bold text-lg shadow-lg">
+                        <i class="fas fa-paper-plane mr-2"></i>提出する
+                    </button>
+                </form>
+            </div>
+
+            <!-- Attendance List -->
+            <div class="glass-effect rounded-2xl p-6">
+                <h3 class="text-2xl font-bold text-white mb-6 flex items-center">
+                    <i class="fas fa-list mr-3 text-blue-400"></i>
+                    出欠一覧 (<span id="responseCount">0</span>名)
+                    <div id="loadingIndicator" class="loading ml-3 hidden"></div>
+                </h3>
+                <div id="attendanceResults">
+                    <div class="text-center text-gray-300 py-8">
+                        <i class="fas fa-inbox text-4xl mb-4"></i>
+                        <p>まだ回答がありません</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDemoKey123456789",
+            authDomain: "meiho-softball.firebaseapp.com",
+            databaseURL: "https://meiho-softball-default-rtdb.firebaseio.com/",
+            projectId: "meiho-softball",
+            storageBucket: "meiho-softball.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef123456"
+        };
+
+        // Initialize Firebase (fallback to localStorage if Firebase fails)
+        let database;
+        let isFirebaseEnabled = false;
+        
+        try {
+            firebase.initializeApp(firebaseConfig);
+            database = firebase.database();
+            isFirebaseEnabled = true;
+            console.log("Firebase initialized successfully");
+        } catch (error) {
+            console.log("Firebase initialization failed, using localStorage:", error);
+            isFirebaseEnabled = false;
+        }
+
+        // Database reference
+        const attendanceRef = isFirebaseEnabled ? database.ref('attendance') : null;
+        let currentEditingId = null;
+
+        // Load responses from Firebase or localStorage
+        function loadResponses() {
+            if (isFirebaseEnabled) {
+                showLoading(true);
+                attendanceRef.on('value', (snapshot) => {
+                    const data = snapshot.val();
+                    const responses = data ? Object.keys(data).map(key => ({
+                        id: key,
+                        ...data[key]
+                    })) : [];
+                    updateAttendanceList(responses);
+                    showLoading(false);
+                });
+            } else {
+                const responses = JSON.parse(localStorage.getItem('attendanceResponses') || '[]');
+                updateAttendanceList(responses);
+            }
+        }
+
+        // Save response to Firebase or localStorage
+        function saveResponse(response) {
+            if (isFirebaseEnabled) {
+                if (currentEditingId) {
+                    // Update existing response
+                    attendanceRef.child(currentEditingId).update(response);
+                } else {
+                    // Add new response
+                    attendanceRef.push(response);
+                }
+            } else {
+                // Fallback to localStorage
+                const responses = JSON.parse(localStorage.getItem('attendanceResponses') || '[]');
+                if (currentEditingId) {
+                    const index = responses.findIndex(r => r.id === currentEditingId);
+                    if (index !== -1) {
+                        responses[index] = { ...response, id: currentEditingId };
+                    }
+                } else {
+                    response.id = Date.now().toString();
+                    responses.push(response);
+                }
+                localStorage.setItem('attendanceResponses', JSON.stringify(responses));
+                updateAttendanceList(responses);
+            }
+        }
+
+        // Delete response from Firebase or localStorage
+        function deleteResponse(id) {
+            if (confirm('この回答を削除してもよろしいですか？')) {
+                if (isFirebaseEnabled) {
+                    attendanceRef.child(id).remove();
+                } else {
+                    const responses = JSON.parse(localStorage.getItem('attendanceResponses') || '[]');
+                    const filteredResponses = responses.filter(r => r.id !== id);
+                    localStorage.setItem('attendanceResponses', JSON.stringify(filteredResponses));
+                    updateAttendanceList(filteredResponses);
+                }
+            }
+        }
+
+        // Update attendance list display
+        function updateAttendanceList(responses) {
+            const resultsDiv = document.getElementById('attendanceResults');
+            const countSpan = document.getElementById('responseCount');
+            
+            countSpan.textContent = responses.length;
+            
+            if (responses.length === 0) {
+                resultsDiv.innerHTML = `
+                    <div class="text-center text-gray-300 py-8">
+                        <i class="fas fa-inbox text-4xl mb-4"></i>
+                        <p>まだ回答がありません</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Sort responses by timestamp (newest first)
+            responses.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+            
+            resultsDiv.innerHTML = responses.map(response => {
+                const statusClass = response.attendance === '参加' ? '' : 
+                                   response.attendance === '不参加' ? 'absent' : 'undecided';
+                const statusIcon = response.attendance === '参加' ? 'fas fa-check-circle text-green-400' : 
+                                  response.attendance === '不参加' ? 'fas fa-times-circle text-red-400' : 
+                                  'fas fa-question-circle text-yellow-400';
+                
+                return `
+                    <div class="attendance-item ${statusClass} rounded-lg p-4 mb-3 fade-in">
+                        <div class="flex justify-between items-start">
+                            <div class="flex-1">
+                                <div class="flex items-center mb-2">
+                                    <i class="${statusIcon} mr-2"></i>
+                                    <strong class="text-white text-lg">${response.name}</strong>
+                                    <span class="ml-3 px-2 py-1 rounded-full text-sm font-semibold ${
+                                        response.attendance === '参加' ? 'bg-green-500 text-white' :
+                                        response.attendance === '不参加' ? 'bg-red-500 text-white' :
+                                        'bg-yellow-500 text-black'
+                                    }">${response.attendance}</span>
+                                </div>
+                                ${response.comment ? `<p class="text-gray-200 text-sm"><i class="fas fa-comment mr-1"></i>${response.comment}</p>` : ''}
+                                <p class="text-gray-400 text-xs mt-2">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    ${new Date(response.timestamp).toLocaleString('ja-JP')}
+                                </p>
+                            </div>
+                            <div class="flex space-x-2 ml-4">
+                                <button onclick="editResponse('${response.id}')" 
+                                        class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md text-sm transition-colors">
+                                    <i class="fas fa-edit"></i> 編集
+                                </button>
+                                <button onclick="deleteResponse('${response.id}')" 
+                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md text-sm transition-colors">
+                                    <i class="fas fa-trash"></i> 削除
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Edit response
+        function editResponse(id) {
+            if (isFirebaseEnabled) {
+                attendanceRef.child(id).once('value', (snapshot) => {
+                    const response = snapshot.val();
+                    if (response) {
+                        populateForm(response);
+                        currentEditingId = id;
+                        document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save mr-2"></i>更新する';
+                        document.getElementById('name').focus();
+                    }
+                });
+            } else {
+                const responses = JSON.parse(localStorage.getItem('attendanceResponses') || '[]');
+                const response = responses.find(r => r.id === id);
+                if (response) {
+                    populateForm(response);
+                    currentEditingId = id;
+                    document.getElementById('submitBtn').innerHTML = '<i class="fas fa-save mr-2"></i>更新する';
+                    document.getElementById('name').focus();
+                }
+            }
+        }
+
+        // Populate form with response data
+        function populateForm(response) {
+            document.getElementById('name').value = response.name || '';
+            document.getElementById('attendance').value = response.attendance || '';
+            document.getElementById('comment').value = response.comment || '';
+        }
+
+        // Show/hide loading indicator
+        function showLoading(show) {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            if (show) {
+                loadingIndicator.classList.remove('hidden');
+            } else {
+                loadingIndicator.classList.add('hidden');
+            }
+        }
+
+        // Form submission
+        document.getElementById('attendanceForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const response = {
+                name: formData.get('name'),
+                attendance: formData.get('attendance'),
+                comment: formData.get('comment') || '',
+                timestamp: new Date().toISOString()
+            };
+            
+            saveResponse(response);
+            
+            // Reset form
+            this.reset();
+            currentEditingId = null;
+            document.getElementById('submitBtn').innerHTML = '<i class="fas fa-paper-plane mr-2"></i>提出する';
+            
+            // Success message
+            showSuccessMessage(currentEditingId ? '回答を更新しました！' : '出欠を記録しました！');
+        });
+
+        // Show success message
+        function showSuccessMessage(message) {
+            const successDiv = document.createElement('div');
+            successDiv.className = 'fixed top-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 fade-in';
+            successDiv.innerHTML = `<i class="fas fa-check-circle mr-2"></i>${message}`;
+            document.body.appendChild(successDiv);
+            
+            setTimeout(() => {
+                successDiv.remove();
+            }, 3000);
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            loadResponses();
+            
+            // Connection status indicator
+            if (isFirebaseEnabled) {
+                const connectedRef = database.ref(".info/connected");
+                connectedRef.on("value", (snap) => {
+                    if (snap.val() === true) {
+                        console.log("Connected to Firebase");
+                    } else {
+                        console.log("Disconnected from Firebase");
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
